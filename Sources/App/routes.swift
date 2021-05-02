@@ -30,4 +30,13 @@ func routes(_ app: Application) throws {
             .map { catalog }
     }
 
+    app.get("orders") { req in
+        Order.query(on: req.db).all()
+    }
+    
+    app.post("orders") { req -> EventLoopFuture<Order> in
+        let order = try req.content.decode(Order.self)
+        return order.create(on: req.db)
+            .map { order }
+    }
 }
