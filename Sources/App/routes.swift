@@ -64,4 +64,15 @@ func routes(_ app: Application) throws {
         return supplierCatalog.create(on: req.db)
             .map { supplierCatalog }
     }
+    
+    // OrderSuppliers: GET, POST
+    app.get("order-suppliers") { req in
+        OrderSupplier.query(on: req.db).all()
+    }
+    
+    app.post("order-suppliers") { req -> EventLoopFuture<OrderSupplier> in
+        let orderSupplier = try req.content.decode(OrderSupplier.self)
+        return orderSupplier.create(on: req.db)
+            .map { orderSupplier }
+    }
 }

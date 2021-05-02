@@ -9,7 +9,7 @@ final class Order: Model, Content {
     var id: Int?
 
     @Field(key: "product_id")
-    var productId: Int
+    var productId: ProductCatalog.IDValue
     
     @Field(key: "request_number")
     var requestNumber: Int
@@ -28,7 +28,7 @@ final class Order: Model, Content {
     
     init() { }
     
-    init(id: Int? = nil, productId: Int, requestNumber: Int, date: String? = nil, status: String, totalPrice: Double? = nil, note: String? = nil) {
+    init(id: Int? = nil, productId: ProductCatalog.IDValue, requestNumber: Int, date: String? = nil, status: String, totalPrice: Double? = nil, note: String? = nil) {
         self.id = id
         self.productId = productId
         self.requestNumber = requestNumber
