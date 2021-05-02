@@ -11,7 +11,7 @@ public func configure(_ app: Application) throws {
 
     // Configure migrations
     app.migrations.add(CreateUser())
-    
+    app.migrations.add(CreateProductCatalog())
 
     // register routes
     try routes(app)

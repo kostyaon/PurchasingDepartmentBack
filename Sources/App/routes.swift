@@ -19,5 +19,15 @@ func routes(_ app: Application) throws {
         return user.create(on: req.db)
             .map { user }
     }
+    
+    app.get("catalogs") { req in
+        ProductCatalog.query(on: req.db).all()
+    }
+    
+    app.post("catalogs") { req -> EventLoopFuture<ProductCatalog> in
+        let catalog = try req.content.decode(ProductCatalog.self)
+        return catalog.create(on: req.db)
+            .map { catalog }
+    }
 
 }
