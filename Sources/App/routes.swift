@@ -21,12 +21,12 @@ func routes(_ app: Application) throws {
             .map { user }
     }
     
-    // Catalogs: GET, POST
-    app.get("catalogs") { req in
+    // ProductCatalog: GET, POST
+    app.get("products") { req in
         ProductCatalog.query(on: req.db).all()
     }
     
-    app.post("catalogs") { req -> EventLoopFuture<ProductCatalog> in
+    app.post("products") { req -> EventLoopFuture<ProductCatalog> in
         let catalog = try req.content.decode(ProductCatalog.self)
         return catalog.create(on: req.db)
             .map { catalog }
@@ -52,5 +52,16 @@ func routes(_ app: Application) throws {
         let supplier = try req.content.decode(Supplier.self)
         return supplier.create(on: req.db)
             .map { supplier }
+    }
+    
+    // SupplierCatalog: GET, POST
+    app.get("catalogs") { req in
+        SupplierCatalog.query(on: req.db).all()
+    }
+    
+    app.post("catalogs") { req -> EventLoopFuture<SupplierCatalog> in
+        let supplierCatalog = try req.content.decode(SupplierCatalog.self)
+        return supplierCatalog.create(on: req.db)
+            .map { supplierCatalog }
     }
 }

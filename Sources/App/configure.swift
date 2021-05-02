@@ -14,6 +14,7 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateProductCatalog())
     app.migrations.add(CreateOrder())
     app.migrations.add(CreateSupplier())
+    app.migrations.add(CreateSupplierCatalog())
 
     // register routes
     try routes(app)
