@@ -13,6 +13,7 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateUser())
     app.migrations.add(CreateProductCatalog())
     app.migrations.add(CreateOrder())
+    app.migrations.add(CreateSupplier())
 
     // register routes
     try routes(app)

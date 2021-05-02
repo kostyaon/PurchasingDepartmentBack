@@ -10,6 +10,7 @@ func routes(_ app: Application) throws {
         return "Hello, world!"
     }
     
+    // Users: GET, POST
     app.get("users") { req in
         User.query(on: req.db).all()
     }
@@ -20,6 +21,7 @@ func routes(_ app: Application) throws {
             .map { user }
     }
     
+    // Catalogs: GET, POST
     app.get("catalogs") { req in
         ProductCatalog.query(on: req.db).all()
     }
@@ -30,6 +32,7 @@ func routes(_ app: Application) throws {
             .map { catalog }
     }
 
+    // Orders: GET, POST
     app.get("orders") { req in
         Order.query(on: req.db).all()
     }
@@ -38,5 +41,16 @@ func routes(_ app: Application) throws {
         let order = try req.content.decode(Order.self)
         return order.create(on: req.db)
             .map { order }
+    }
+    
+    // Suppliers: GET, POST
+    app.get("suppliers") { req in
+        Supplier.query(on: req.db).all()
+    }
+    
+    app.post("suppliers") { req -> EventLoopFuture<Supplier> in
+        let supplier = try req.content.decode(Supplier.self)
+        return supplier.create(on: req.db)
+            .map { supplier }
     }
 }
