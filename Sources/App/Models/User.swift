@@ -5,7 +5,7 @@ final class User: Model, Content {
     
     static let schema = "users"
     
-    @ID(key: .id)
+    @ID(custom: "id")
     var id: Int?
     
     @Field(key: "login")

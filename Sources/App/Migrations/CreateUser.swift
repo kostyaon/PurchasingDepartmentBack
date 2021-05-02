@@ -4,7 +4,7 @@ struct CreateUser: Migration {
     
     func prepare(on database: Database) -> EventLoopFuture<Void> {
         database.schema("users")
-            .id()
+            .field("id", .int, .identifier(auto: true))
             .field("login", .string)
             .field("password", .string)
             .field("name", .string)
