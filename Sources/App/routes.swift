@@ -22,9 +22,16 @@ func routes(_ app: Application) throws {
     
     app.post("register") { req -> EventLoopFuture<User> in
         let user = try req.content.decode(User.self)
-        return user.create(on: req.db)
-            .map { user }
+        return user.create(on: req.db).map { user }
     }
+    
+
+    
+    
+    
+    
+    
+    
     
     
     
