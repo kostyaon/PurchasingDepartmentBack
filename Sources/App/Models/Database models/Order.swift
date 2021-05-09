@@ -30,11 +30,11 @@ final class Order: Model, Content {
     var numberOfItems: Int
     
     @Field(key: "selected_supplier")
-    var selectedSupplier: Supplier.IDValue?
+    var selectedSupplierId: Supplier.IDValue?
     
     init() { }
     
-    init(id: Int? = nil, productId: ProductCatalog.IDValue, requestNumber: Int, date: String? = nil, status: String, totalPrice: Double? = nil, note: String? = nil, numberOfItems: Int, selectedSupplier: Supplier.IDValue? = nil) {
+    init(id: Int? = nil, productId: ProductCatalog.IDValue, requestNumber: Int, date: String? = nil, status: String, totalPrice: Double? = nil, note: String? = nil, numberOfItems: Int, selectedSupplierId: Supplier.IDValue? = nil) {
         self.id = id
         self.productId = productId
         self.requestNumber = requestNumber
@@ -43,7 +43,7 @@ final class Order: Model, Content {
         self.totalPrice = totalPrice
         self.note = note
         self.numberOfItems = numberOfItems
-        self.selectedSupplier = selectedSupplier
+        self.selectedSupplierId = selectedSupplierId
     }
 }
 
