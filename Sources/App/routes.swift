@@ -10,6 +10,31 @@ func routes(_ app: Application) throws {
         return "Hello, world!"
     }
     
+    // Auth: GET, POST
+    app.post("login") { req -> EventLoopFuture<User> in
+        let loginData = try req.content.decode(LoginData.self)
+        return User.query(on: req.db)
+            .filter(\.$login == loginData.login)
+            .filter(\.$password == loginData.password)
+            .first()
+            .unwrap(or: Abort(.notFound))
+    }
+    
+    app.post("register") { req -> EventLoopFuture<User> in
+        let user = try req.content.decode(User.self)
+        return user.create(on: req.db).map { user }
+    }
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // Users: GET, POST
     app.get("users") { req in
         User.query(on: req.db).all()

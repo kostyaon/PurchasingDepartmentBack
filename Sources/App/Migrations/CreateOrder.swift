@@ -12,6 +12,8 @@ struct CreateOrder: Migration {
             .field("total_price", .double)
             .field("measurement_unit", .string)
             .field("note", .string)
+            .field("amount", .int)
+            .field("selected_supplier", .int)
             .foreignKey("product_id", references: "product_catalog", "product_id", onDelete: .cascade, onUpdate: .cascade)
             .create()
     }
