@@ -4,6 +4,7 @@ import Vapor
 func routes(_ app: Application) throws {
     try app.register(collection: AllOrdersController())
     try app.register(collection: UserController())
+    try app.register(collection: ProductController())
     
     // Auth: GET, POST
     app.post("login") { req -> EventLoopFuture<User> in
@@ -18,17 +19,6 @@ func routes(_ app: Application) throws {
     app.post("register") { req -> EventLoopFuture<User> in
         let user = try req.content.decode(User.self)
         return user.create(on: req.db).map { user }
-    }
-    
-    // ProductCatalog: GET, POST
-    app.get("products") { req in
-        ProductCatalog.query(on: req.db).all()
-    }
-    
-    app.post("products") { req -> EventLoopFuture<ProductCatalog> in
-        let catalog = try req.content.decode(ProductCatalog.self)
-        return catalog.create(on: req.db)
-            .map { catalog }
     }
 
     // Orders: GET, POST

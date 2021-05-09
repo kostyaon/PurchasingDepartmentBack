@@ -4,11 +4,11 @@ import Fluent
 final class UserController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let users = routes.grouped("users")
-        users.get(use: getUser)
+        users.get(use: getUsers)
         users.post(use: postUser)
     }
     
-    func getUser(req: Request) throws -> EventLoopFuture<[User]> {
+    func getUsers(req: Request) throws -> EventLoopFuture<[User]> {
         return User.query(on: req.db).all()
     }
     
