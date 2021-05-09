@@ -11,6 +11,7 @@ final class AllOrdersController: RouteCollection {
         var response: [OrderResponse] = []
         
         return Order.query(on: req.db)
+            .filter(\.$status == "requested")
             .join(ProductCatalog.self, on: \Order.$productId == \ProductCatalog.$id, method: .inner)
             .all()
             .map { orders in
