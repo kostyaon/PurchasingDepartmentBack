@@ -7,6 +7,7 @@ func routes(_ app: Application) throws {
     try app.register(collection: ProductController())
     try app.register(collection: OrderController())
     try app.register(collection: SupplierController())
+    try app.register(collection: CatalogController())
     
     // Auth: GET, POST
     app.post("login") { req -> EventLoopFuture<User> in
@@ -21,17 +22,6 @@ func routes(_ app: Application) throws {
     app.post("register") { req -> EventLoopFuture<User> in
         let user = try req.content.decode(User.self)
         return user.create(on: req.db).map { user }
-    }
-    
-    // SupplierCatalog: GET, POST
-    app.get("catalogs") { req in
-        SupplierCatalog.query(on: req.db).all()
-    }
-    
-    app.post("catalogs") { req -> EventLoopFuture<SupplierCatalog> in
-        let supplierCatalog = try req.content.decode(SupplierCatalog.self)
-        return supplierCatalog.create(on: req.db)
-            .map { supplierCatalog }
     }
     
     // OrderSuppliers: GET, POST
