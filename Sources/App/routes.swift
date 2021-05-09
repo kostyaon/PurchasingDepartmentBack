@@ -24,6 +24,8 @@ func routes(_ app: Application) throws {
         return user.create(on: req.db).map { user }
     }
     
+    
+    // MARK: - Unnecessary requests
     // OrderSuppliers: GET, POST
     app.get("order-suppliers") { req in
         OrderSupplier.query(on: req.db).all()

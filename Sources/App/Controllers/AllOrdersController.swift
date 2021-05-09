@@ -24,6 +24,7 @@ final class AllOrdersController: RouteCollection {
                     orderResponse.numberOfItems = order.numberOfItems
                     orderResponse.note = order.note
                     orderResponse.date = order.date
+                    orderResponse.status = order.status
                     orderResponse.totalPrice = order.totalPrice
                     orderResponse.suppliers = []
                     orderResponse.selectedSupplierId = order.selectedSupplierId
