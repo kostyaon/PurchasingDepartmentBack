@@ -119,13 +119,13 @@ public func configure(_ app: Application) throws {
     ]
     
     // Add data to tables
-    users.create(on: app.db)
-    products.create(on: app.db)
-    supplierProducts.create(on: app.db)
-    suppliers.create(on: app.db)
-    orders.create(on: app.db)
-    ordersSupplier.create(on: app.db)
-    suppliersCatalog.create(on: app.db)
+//    users.create(on: app.db)
+//    products.create(on: app.db)
+//    supplierProducts.create(on: app.db)
+//    suppliers.create(on: app.db)
+//    orders.create(on: app.db)
+//    ordersSupplier.create(on: app.db)
+//    suppliersCatalog.create(on: app.db)
     
     // register routes
     try routes(app)

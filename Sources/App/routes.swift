@@ -2,13 +2,12 @@ import Fluent
 import Vapor
 
 func routes(_ app: Application) throws {
-    app.get { req in
-        return "It works!"
-    }
-
-    app.get("hello") { req -> String in
-        return "Hello, world!"
-    }
+    try app.register(collection: AllOrdersController())
+    try app.register(collection: UserController())
+    try app.register(collection: ProductController())
+    try app.register(collection: OrderController())
+    try app.register(collection: SupplierController())
+    try app.register(collection: CatalogController())
     
     // Auth: GET, POST
     app.post("login") { req -> EventLoopFuture<User> in
@@ -25,71 +24,8 @@ func routes(_ app: Application) throws {
         return user.create(on: req.db).map { user }
     }
     
-
     
-    
-    
-    
-    
-    
-    
-    
-    
-    // Users: GET, POST
-    app.get("users") { req in
-        User.query(on: req.db).all()
-    }
-    
-    app.post("users") { req -> EventLoopFuture<User> in
-        let user = try req.content.decode(User.self)
-        return user.create(on: req.db)
-            .map { user }
-    }
-    
-    // ProductCatalog: GET, POST
-    app.get("products") { req in
-        ProductCatalog.query(on: req.db).all()
-    }
-    
-    app.post("products") { req -> EventLoopFuture<ProductCatalog> in
-        let catalog = try req.content.decode(ProductCatalog.self)
-        return catalog.create(on: req.db)
-            .map { catalog }
-    }
-
-    // Orders: GET, POST
-    app.get("orders") { req in
-        Order.query(on: req.db).all()
-    }
-    
-    app.post("orders") { req -> EventLoopFuture<Order> in
-        let order = try req.content.decode(Order.self)
-        return order.create(on: req.db)
-            .map { order }
-    }
-    
-    // Suppliers: GET, POST
-    app.get("suppliers") { req in
-        Supplier.query(on: req.db).all()
-    }
-    
-    app.post("suppliers") { req -> EventLoopFuture<Supplier> in
-        let supplier = try req.content.decode(Supplier.self)
-        return supplier.create(on: req.db)
-            .map { supplier }
-    }
-    
-    // SupplierCatalog: GET, POST
-    app.get("catalogs") { req in
-        SupplierCatalog.query(on: req.db).all()
-    }
-    
-    app.post("catalogs") { req -> EventLoopFuture<SupplierCatalog> in
-        let supplierCatalog = try req.content.decode(SupplierCatalog.self)
-        return supplierCatalog.create(on: req.db)
-            .map { supplierCatalog }
-    }
-    
+    // MARK: - Unnecessary requests
     // OrderSuppliers: GET, POST
     app.get("order-suppliers") { req in
         OrderSupplier.query(on: req.db).all()
