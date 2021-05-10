@@ -10,13 +10,17 @@ final class AllOrdersController: RouteCollection {
     func joined(req: Request) throws -> EventLoopFuture<[OrderResponse]> {
         var response: [OrderResponse] = []
         
-        
         return Order.query(on: req.db)
             .filter(\.$status == "requested")
             .join(ProductCatalog.self, on: \Order.$productId == \ProductCatalog.$id, method: .inner)
+            .join(SupplierCatalog.self, on: \SupplierCatalog.$partNumber == \ProductCatalog.$partNumber, method: .inner)
+         //   .filter(ProductCatalog.self, \.$id == productId)
+            .join(SupplierSupplierCatalog.self, on: \SupplierSupplierCatalog.$catalogId == \SupplierCatalog.$id)
+            .join(Supplier.self, on: \Supplier.$id == \SupplierSupplierCatalog.$supplierId)
             .all()
             .map { orders in
                 for order in orders {
+                    print(order)
                     // Add order info to the response
                     var orderResponse = OrderResponse()
                     let product = try! order.joined(ProductCatalog.self)
@@ -30,82 +34,28 @@ final class AllOrdersController: RouteCollection {
                     orderResponse.totalPrice = order.totalPrice
                     orderResponse.selectedSupplierId = order.selectedSupplierId
                     
-                    /* ProductCatalog.query(on: req.db)
-                     .join(SupplierCatalog.self, on: \SupplierCatalog.$partNumber == \ProductCatalog.$partNumber, method: .inner)
-                     .filter(\.$id == order.productId)
-                     .first()
-                     .unwrap(or: Abort(.noContent))
-                     .map { prod  in
-                     print("1")
-                     let catalogProduct = try! prod.joined(ProductCatalog.self)
-                     SupplierSupplierCatalog.query(on: req.db)
-                     .join(SupplierCatalog.self, on: \SupplierCatalog.$id == \SupplierSupplierCatalog.$catalogId, method: .inner)
-                     .filter(\SupplierSupplierCatalog.$catalogId == catalogProduct.id ?? 0)
-                     .all()
-                     .map {
-                     for sup in $0 {
-                     Supplier.query(on: req.db)
-                     .filter(\.$id == sup.supplierId)
-                     .first()
-                     .unwrap(or: Abort(.noContent))
-                     .map { supplier in
-                     print(supplier)
-                     orderResponse.suppliers.append(supplier)
-                     }
-                     }
-                     }
-                     
-                     }
-                     let prodCatalog = SupplierCatalog.query(on: req.db)
-                     .join(ProductCatalog.self, on: \SupplierCatalog.$partNumber == \ProductCatalog.$partNumber, method: .inner)
-                     .filter(ProductCatalog.self, \.$id == order.productId)
-                     .join(SupplierSupplierCatalog.self, on: \SupplierSupplierCatalog.$catalogId == \SupplierCatalog.$id)
-                     .join(Supplier.self, on: \Supplier.$id == \SupplierSupplierCatalog.$supplierId)
-                     .all()
-                     .map {
-                     print($0)
-                     for sup in $0 {
-                     let supplier = try! sup.joined(Supplier.self)
-                     let newSupplier = Supplier()
-                     newSupplier.id = supplier.id
-                     newSupplier.name = supplier.name
-                     newSupplier.email = supplier.email
-                     newSupplier.address = supplier.address
-                     newSupplier.phone = supplier.phone
-                     print(newSupplier)
-                     orderResponse.suppliers.append(newSupplier)
-                     }
-                     }*/
-                    orderResponse.suppliers = self.getSuppliers(req: req, productId: order.productId)
-                    
-                    
-                    response.append(orderResponse)
-                }
-                return response
-            }
-    }
-    
-    func getSuppliers(req: Request, productId: Int) -> [Supplier] {
-        var suppliers: [Supplier] = []
-        SupplierCatalog.query(on: req.db)
-            .join(ProductCatalog.self, on: \SupplierCatalog.$partNumber == \ProductCatalog.$partNumber, method: .inner)
-            .filter(ProductCatalog.self, \.$id == productId)
-            .join(SupplierSupplierCatalog.self, on: \SupplierSupplierCatalog.$catalogId == \SupplierCatalog.$id)
-            .join(Supplier.self, on: \Supplier.$id == \SupplierSupplierCatalog.$supplierId)
-            .all()
-            .map {
-                for sup in $0 {
-                    let supplier = try! sup.joined(Supplier.self)
+                    let supplier = try! order.joined(Supplier.self)
                     let newSupplier = Supplier()
                     newSupplier.id = supplier.id
                     newSupplier.name = supplier.name
                     newSupplier.email = supplier.email
                     newSupplier.address = supplier.address
                     newSupplier.phone = supplier.phone
-                    print(newSupplier)
-                    suppliers.append(newSupplier)
+                    orderResponse.suppliers.append(newSupplier)
+                    
+                    for (index, res) in response.enumerated() {
+                        if res.orderId == order.id {
+                            let sups = res.suppliers
+                            orderResponse.suppliers.append(contentsOf: sups)
+                            response.remove(at: index)
+                        }
+                    }
+                    
+                    
+                    response.append(orderResponse)
                 }
+                
+                return response
             }
-        return suppliers
     }
 }
