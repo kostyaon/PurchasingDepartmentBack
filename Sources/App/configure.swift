@@ -16,6 +16,7 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateSupplierCatalog())
     app.migrations.add(CreateOrderSupplier())
     app.migrations.add(CreateSupplierSupplierCatalog())
+    try app.autoMigrate().wait()
     
     // Fill tables with data
     let users = [
@@ -62,13 +63,13 @@ public func configure(_ app: Application) throws {
     ]
     
     let orders = [
-        Order(productId: 1, requestNumber: 100, date: "01.01.2021", status: "requested", totalPrice: 111.1, numberOfItems: 10),
-        Order(productId: 2, requestNumber: 101, date: "02.02.2021", status: "awaitingForPrice", totalPrice: 222.2, note: "Call to Elon Musk", numberOfItems: 20),
+        Order(productId: 1, requestNumber: 100, date: "01.01.2021", status: "requested", numberOfItems: 10),
+        Order(productId: 2, requestNumber: 101, date: "02.02.2021", status: "awaitingForPrice", note: "Call to Elon Musk", numberOfItems: 20),
         Order(productId: 3, requestNumber: 102, date: "03.03.2021", status: "inProgress", totalPrice: 333.3, note: "This is for Rick C-137", numberOfItems: 30, selectedSupplierId: 1),
         Order(productId: 4, requestNumber: 103, date: "04.04.2021", status: "dispute", totalPrice: 444.4, numberOfItems: 40, selectedSupplierId: 2),
         Order(productId: 5, requestNumber: 104, date: "05.05.2021", status: "completed", totalPrice: 555.5, numberOfItems: 50),
-        Order(productId: 6, requestNumber: 105, date: "06.06.2021", status: "requested", totalPrice: 666.6, note: "Morty, what a F*** are you doing here?", numberOfItems: 60),
-        Order(productId: 7, requestNumber: 106, date: "07.07.2021", status: "awaitingForPrice", totalPrice: 777.7, note: "Rick, we need Meeseeks!", numberOfItems: 70, selectedSupplierId: 3),
+        Order(productId: 6, requestNumber: 105, date: "06.06.2021", status: "requested", note: "Morty, what a F*** are you doing here?", numberOfItems: 60),
+        Order(productId: 7, requestNumber: 106, date: "07.07.2021", status: "awaitingForPrice", note: "Rick, we need Meeseeks!", numberOfItems: 70, selectedSupplierId: 3),
         Order(productId: 8, requestNumber: 107, date: "08.08.2021", status: "inProgress", totalPrice: 888.8, numberOfItems: 80, selectedSupplierId: 4),
         Order(productId: 9, requestNumber: 108, date: "09.09.2021", status: "dispute", totalPrice: 999.9, numberOfItems: 90, selectedSupplierId: 1),
         Order(productId: 10, requestNumber: 109, date: "10.10.2021", status: "completed", totalPrice: 1000.0, numberOfItems: 100, selectedSupplierId: 2)
@@ -119,6 +120,7 @@ public func configure(_ app: Application) throws {
     ]
     
     // Add data to tables
+    // Uncomment for filling tables (then you can delete it or comment back)
 //    users.create(on: app.db)
 //    products.create(on: app.db)
 //    supplierProducts.create(on: app.db)
