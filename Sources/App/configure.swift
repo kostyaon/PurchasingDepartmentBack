@@ -3,9 +3,6 @@ import FluentSQLiteDriver
 import Vapor
 
 public func configure(_ app: Application) throws {
-    // uncomment to serve files from /Public folder
-    // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
-
     app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
 
     // Configure migrations
@@ -18,7 +15,7 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateSupplierSupplierCatalog())
     try app.autoMigrate().wait()
     
-    // Fill tables with data
+    // Describe data
     let users = [
         User(login: "purchase04", password: "mEfAgOt", name: "Martin", surname: "Belov", email: "belov.ukraine@purchase.me", role: true),
         User(login: "purchase03", password: "penisInMouthPlease", name: "Evgeniy", surname: "Revyako", email: "revyako.bear@purchase.me", role: false),
@@ -119,7 +116,7 @@ public func configure(_ app: Application) throws {
         SupplierSupplierCatalog(catalogId: 1, supplierId: 4)
     ]
     
-    // Add data to tables
+    // Fill tables with describing data
     // Uncomment for filling tables (then you can delete it or comment back)
 //    users.create(on: app.db)
 //    products.create(on: app.db)
