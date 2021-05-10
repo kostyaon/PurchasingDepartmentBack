@@ -14,7 +14,6 @@ final class AllOrdersController: RouteCollection {
             .filter(\.$status == "requested")
             .join(ProductCatalog.self, on: \Order.$productId == \ProductCatalog.$id, method: .inner)
             .join(SupplierCatalog.self, on: \SupplierCatalog.$partNumber == \ProductCatalog.$partNumber, method: .inner)
-         //   .filter(ProductCatalog.self, \.$id == productId)
             .join(SupplierSupplierCatalog.self, on: \SupplierSupplierCatalog.$catalogId == \SupplierCatalog.$id)
             .join(Supplier.self, on: \Supplier.$id == \SupplierSupplierCatalog.$supplierId)
             .all()
@@ -51,10 +50,8 @@ final class AllOrdersController: RouteCollection {
                         }
                     }
                     
-                    
                     response.append(orderResponse)
                 }
-                
                 return response
             }
     }
