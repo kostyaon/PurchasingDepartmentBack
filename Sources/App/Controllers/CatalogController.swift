@@ -3,7 +3,7 @@ import Fluent
 
 final class CatalogController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let catalogs = routes.grouped("suppliers")
+        let catalogs = routes.grouped("catalogs")
         catalogs.get(use: getCatalogs)
         catalogs.post(use: postCatalog)
     }

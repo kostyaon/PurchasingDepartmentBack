@@ -17,12 +17,12 @@ public func configure(_ app: Application) throws {
     
     // Describe data
     let users = [
-        User(login: "purchase04", password: "mEfAgOt", name: "Martin", surname: "Belov", email: "belov.ukraine@purchase.me", role: true),
-        User(login: "purchase03", password: "penisInMouthPlease", name: "Evgeniy", surname: "Revyako", email: "revyako.bear@purchase.me", role: false),
-        User(login: "purchase02", password: "BitchImGay", name: "Artyom", surname: "Batura", email: "batura.eren.yeager@purchase.me", role: true),
-        User(login: "purchase01", password: "curlyGuy", name: "Artyom", surname: "Ystinov", email: "ystinov.music@purchase.me", role: false),
-        User(login: "purchase00", password: "GorodSochi", name: "Konstantin", surname: "Petrikevich", email: "aVperediEsche3dnya.i3nochi@purchase.me", role: true),
-        User(login: "admin", password: "administrator", name: "Big", surname: "Head", email: "department.head@purchase.me", role: true)
+        User(login: "purchase04", password: "mEfAgOt", name: "Martin", surname: "Belov", phone: "+375 (44) 4342-444", email: "belov.ukraine@purchase.me", role: true),
+        User(login: "purchase03", password: "penisInMouthPlease", name: "Evgeniy", surname: "Revyako", phone: "+375 (29) 1333-232", email: "revyako.bear@purchase.me", role: false),
+        User(login: "purchase02", password: "BitchImGay", name: "Artyom", surname: "Batura", phone: "+375 (29) 8888-888", email: "batura.eren.yeager@purchase.me", role: true),
+        User(login: "purchase01", password: "curlyGuy", name: "Artyom", surname: "Ystinov", phone: "+375 (33) 7644-331", email: "ystinov.music@purchase.me", role: false),
+        User(login: "purchase00", password: "GorodSochi", name: "Konstantin", surname: "Petrikevich", phone: "+375 (33) 3333-333", email: "aVperediEsche3dnya.i3nochi@purchase.me", role: true),
+        User(login: "admin", password: "administrator", name: "Big", surname: "Head", phone: "+375 (25) 2222-222", email: "department.head@purchase.me", role: true)
     ]
     
     let products = [
