@@ -50,8 +50,18 @@ final class SupplierController: RouteCollection {
     }
     
     func postSupplier(req: Request) throws -> EventLoopFuture<Supplier> {
-        let supplier = try req.content.decode(Supplier.self)
-        return supplier.create(on: req.db)
-            .map { supplier }
+        let supplier = try req.content.decode(SupplierResponse.self)
+        
+        Supplier(name: supplier.name, email: supplier.email, address: supplier.address, phone: supplier.phone).create(on: req.db)
+        
+        for product in supplier.products {
+            SupplierCatalog(id: product.id, name: product.name, partNumber: product.partNumber, measurementUnit: product.measurementUnit).create(on: req.db)
+            SupplierSupplierCatalog(catalogId: product.id ?? 0, supplierId: supplier.id)
+        }
+        
+        return Supplier.query(on: req.db)
+            .filter(\.$id == supplier.id)
+            .first()
+            .unwrap(or: Abort(.noContent))
     }
 }

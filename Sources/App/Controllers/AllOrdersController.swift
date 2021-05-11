@@ -61,6 +61,7 @@ final class AllOrdersController: RouteCollection {
     func updateOrder(req: Request) throws -> EventLoopFuture<Order> {
         let response = try req.content.decode(OrderResponse.self)
         let suppliers = response.suppliers
+        
         for supplier in suppliers {
             OrderSupplier(orderId: response.orderId ?? 0, supplierId: supplier.id ?? 0).create(on: req.db)
         }
@@ -69,6 +70,7 @@ final class AllOrdersController: RouteCollection {
             .set(\.$date, to: response.date)
             .set(\.$note, to: response.note)
             .set(\.$status, to: response.status)
+            .set(\.$selectedSupplierId, to: response.selectedSupplierId)
             .filter(\.$id == response.orderId ?? 0)
             .update()
         
