@@ -3,7 +3,7 @@ import Fluent
 
 final class AllOrdersController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let orders = routes.grouped("allOrders")
+        let orders = routes.grouped("orders")
         orders.get(use: joined)
         orders.post(use: updateOrder)
     }
