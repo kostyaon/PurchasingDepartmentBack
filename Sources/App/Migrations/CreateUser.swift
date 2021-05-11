@@ -10,6 +10,7 @@ struct CreateUser: Migration {
             .field("name", .string)
             .field("surname", .string)
             .field("email", .string)
+            .field("phone", .string)
             .field("role", .bool)
             .create()
     }

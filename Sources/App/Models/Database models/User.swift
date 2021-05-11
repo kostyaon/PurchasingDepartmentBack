@@ -23,16 +23,20 @@ final class User: Model, Content {
     @Field(key: "email")
     var email: String
     
+    @Field(key: "phone")
+    var phone: String
+    
     @Field(key: "role")
     var role: Bool
     
     init() { }
     
-    init(id: Int? = nil, login: String, password: String, name: String, surname: String, email: String, role: Bool) {
+    init(id: Int? = nil, login: String, password: String, name: String, surname: String, phone: String, email: String, role: Bool) {
         self.id = id
         self.login = login
         self.password = password
         self.name = name
+        self.phone = phone
         self.surname = surname
         self.email = email
         self.role = role
