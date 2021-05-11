@@ -9,10 +9,11 @@ final class AllOrdersController: RouteCollection {
     }
     
     func joined(req: Request) throws -> EventLoopFuture<[OrderResponse]> {
+        let status = try! req.query.decode(Status.self)
         var response: [OrderResponse] = []
         
         return Order.query(on: req.db)
-            .filter(\.$status == "requested")
+            .filter(\.$status == status.status ?? "")
             .join(ProductCatalog.self, on: \Order.$productId == \ProductCatalog.$id, method: .inner)
             .join(SupplierCatalog.self, on: \SupplierCatalog.$partNumber == \ProductCatalog.$partNumber, method: .inner)
             .join(SupplierSupplierCatalog.self, on: \SupplierSupplierCatalog.$catalogId == \SupplierCatalog.$id)
