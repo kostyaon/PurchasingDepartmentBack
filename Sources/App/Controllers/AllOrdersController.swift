@@ -71,6 +71,7 @@ final class AllOrdersController: RouteCollection {
             .set(\.$date, to: response.date)
             .set(\.$note, to: response.note)
             .set(\.$status, to: response.status)
+            .set(\.$totalPrice, to: response.selectedPrice ?? 0.0)
             .set(\.$selectedSupplierId, to: response.selectedSupplierId)
             .filter(\.$id == response.orderId ?? 0)
             .update()
