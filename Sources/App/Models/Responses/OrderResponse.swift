@@ -10,7 +10,8 @@ struct OrderResponse: Content {
     var note: String?
     var date: String?
     var status: String
-    var totalPrice: Double?
+    var selectedPrice: Double?
+    var requestNumber: Int
     var suppliers: [Supplier]
     var selectedSupplierId: Supplier.IDValue?
     
@@ -19,6 +20,7 @@ struct OrderResponse: Content {
         self.partNumber = ""
         self.numberOfItems = 0
         self.status = ""
+        self.requestNumber = 0
         self.suppliers = []
     }
 }

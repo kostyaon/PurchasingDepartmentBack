@@ -32,8 +32,9 @@ final class AllOrdersController: RouteCollection {
                     orderResponse.note = order.note
                     orderResponse.date = order.date
                     orderResponse.status = order.status
-                    orderResponse.totalPrice = order.totalPrice
+                    orderResponse.selectedPrice = order.totalPrice
                     orderResponse.selectedSupplierId = order.selectedSupplierId
+                    orderResponse.requestNumber = order.requestNumber
                     
                     let supplier = try! order.joined(Supplier.self)
                     let newSupplier = Supplier()
