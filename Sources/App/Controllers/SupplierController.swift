@@ -3,12 +3,12 @@ import Fluent
 
 final class SupplierController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let suppliers = routes.grouped("suppliers")
-        suppliers.get(use: getSuppliers)
-        suppliers.post(use: postSupplier)
+        let supplier = routes.grouped("supplier")
+        supplier.get(use: getSuppliers)
     }
     
-    func getSuppliers(req: Request) throws -> EventLoopFuture<[SupplierResponse]> {
+    func getSuppliers(req: Request) throws -> EventLoopFuture<SupplierResponse> {
+        let supId = try! req.query.decode(SupplierID.self)
         var response: [SupplierResponse] = []
         
         return Supplier.query(on: req.db)
@@ -19,45 +19,34 @@ final class SupplierController: RouteCollection {
                 print(suppliers)
                 for supplier in suppliers {
                     print(supplier)
-                    var supplierResponse = SupplierResponse()
-                    
-                    supplierResponse.id = supplier.id ?? 0
-                    supplierResponse.name = supplier.name
-                    supplierResponse.email = supplier.email
-                    supplierResponse.address = supplier.address
-                    supplierResponse.phone = supplier.phone
-                    
-                    let product = try! supplier.joined(SupplierCatalog.self)
-                    let newProduct = SupplierCatalog()
-                    newProduct.id = product.id
-                    newProduct.name = product.name
-                    newProduct.partNumber = product.partNumber
-                    newProduct.measurementUnit = product.measurementUnit
-                    supplierResponse.products.append(newProduct)
-                    
-                    for (index, res) in response.enumerated() {
-                        if res.id == supplier.id {
-                            let prod = res.products
-                            supplierResponse.products.append(contentsOf: prod)
-                            response.remove(at: index)
+                    if supplier.id ?? 0 == supId.id {
+                        var supplierResponse = SupplierResponse()
+                        
+                        supplierResponse.id = supplier.id ?? 0
+                        supplierResponse.name = supplier.name
+                        supplierResponse.email = supplier.email
+                        supplierResponse.address = supplier.address
+                        supplierResponse.phone = supplier.phone
+                        
+                        let product = try! supplier.joined(SupplierCatalog.self)
+                        let newProduct = SupplierCatalog()
+                        newProduct.id = product.id
+                        newProduct.name = product.name
+                        newProduct.partNumber = product.partNumber
+                        newProduct.measurementUnit = product.measurementUnit
+                        supplierResponse.products.append(newProduct)
+                        
+                        for (index, res) in response.enumerated() {
+                            if res.id == supplier.id {
+                                let prod = res.products
+                                supplierResponse.products.append(contentsOf: prod)
+                                response.remove(at: index)
+                            }
                         }
+                        response.append(supplierResponse)
                     }
-                    
-                    response.append(supplierResponse)
                 }
-                return response
-            }
-    }
-    
-    func postSupplier(req: Request) throws -> EventLoopFuture<Supplier> {
-        let supplier = try req.content.decode(Supplier.self)
-        
-       return supplier.create(on: req.db)
-            .map {
-                for _ in 1...6 {
-                    SupplierSupplierCatalog(catalogId: Int.random(in: 1...10), supplierId: supplier.id ?? 0).create(on: req.db)
-                }
-                return supplier
+                return response.first!
             }
     }
 }

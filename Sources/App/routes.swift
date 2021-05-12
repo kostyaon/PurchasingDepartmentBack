@@ -6,6 +6,7 @@ func routes(_ app: Application) throws {
     try app.register(collection: UserController())
     try app.register(collection: ProductController())
     try app.register(collection: OrderController())
+    try app.register(collection: SuppliersController())
     try app.register(collection: SupplierController())
     try app.register(collection: CatalogController())
     

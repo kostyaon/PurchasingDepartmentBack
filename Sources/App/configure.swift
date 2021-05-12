@@ -117,7 +117,6 @@ public func configure(_ app: Application) throws {
     ]
     
     // Fill tables with describing data
-    // Uncomment for filling tables (then you can delete it or comment back)
 //    users.create(on: app.db)
 //    products.create(on: app.db)
 //    supplierProducts.create(on: app.db)
